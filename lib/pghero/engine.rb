@@ -1,9 +1,12 @@
+require 'sprockets/railtie' unless defined?(Sprockets)
+
 module PgHero
   class Engine < ::Rails::Engine
     isolate_namespace PgHero
 
     initializer "pghero", group: :all do |app|
-      # check if Rails api mode
+       app.middleware.use ActionDispatch::Flash
+
       if app.config.respond_to?(:assets)
         if defined?(Sprockets) && Sprockets::VERSION >= "4"
           app.config.assets.precompile << "pghero/application.js"
